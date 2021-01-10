@@ -1,0 +1,28 @@
+<div class="page-a4 page">
+  <div #pagediv class="page-content">
+    <table>
+      <thead #header>
+        <tr>
+          <td>№ п/п</td>
+          <td>String</td>
+        </tr>
+      </thead>
+
+      <ng-container *ngFor="let item of page.items; let itemNum = index">
+        <tbody #content>
+          <tr>
+            <td>{{itemNum + 1}}</td>
+            <td>{{item.content}}</td>
+          </tr>
+        </tbody>
+      </ng-container>
+
+      <tfoot #footer>
+        <tr>
+          <td>Итого: </td>
+          <td>{{page.items.length}} записей на странице</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>

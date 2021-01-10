@@ -1,0 +1,21 @@
+{
+  "author": "Dmitry Kotlyar",
+  "name": "report-lib",
+  "version": "0.0.3",
+  "license": "MIT",
+  "description": "Library for generate paper reports with Angular projects. This package automatically split your data in several pages",
+  "keywords": ["angular", "report"],
+  "bugs": {
+    "email": "dm.kotlyar@yandex.ru"
+  },
+  "peerDependencies": {
+    "@angular/common": "^11.0.5",
+    "@angular/core": "^11.0.5"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
+  "publishConfig": {
+    "registry": "http://registry.npmjs.org/"
+  }
+}

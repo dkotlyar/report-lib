@@ -1,0 +1,27 @@
+.page {
+  padding: 5mm;
+
+  font-family: 'Arial', 'Roboto', sans-serif;
+  font-size: 10pt;
+}
+
+.page-content {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+table {
+  border-spacing: 0;
+  border-collapse: collapse;
+  width: 100%;
+}
+table tr {
+  height: 5mm;
+}
+table tr td {
+  border: 1px solid black;
+  vertical-align: center;
+  text-align: left;
+  padding: 1mm;
+}

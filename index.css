@@ -1,0 +1,100 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  font-size: 11pt;
+  font-weight: 400;
+  font-style: normal;
+  font-variant: normal;
+  text-decoration: none;
+  vertical-align: baseline;
+  line-height: normal;
+}
+
+body {
+  background-color: #f2f2f2;
+}
+
+.btn-print {
+  position: fixed;
+  right: 50px;
+  bottom: 50px;
+  background-image: url('assets/print-black-18dp.svg');
+  background-repeat: no-repeat;
+  background-size: 60%;
+  background-position: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+
+.component-wrapper-a4 {
+  box-sizing: border-box;
+  margin: 10mm auto;
+  width: 210mm;
+  height: 297mm;
+}
+.component-wrapper-a4.report-landscape {
+  width: 297mm;
+  height: 210mm;
+}
+
+.page-a4 {
+  position: relative;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3);
+  background-color: white;
+  box-sizing: border-box;
+
+  width: 210mm;
+  height: 297mm;
+}
+.report-landscape .page-a4 {
+  margin: 0;
+  transform: translateY(-43.5mm) translateX(43.5mm) rotate(90deg);
+  box-sizing: border-box;
+}
+
+.page {
+  box-sizing: border-box;
+  width: 210mm;
+  height: 297mm;
+}
+.report-landscape .page {
+  width: 297mm;
+  height: 210mm;
+
+  transform: translateY(43.5mm) translateX(-43.5mm) rotate(-90deg);
+}
+
+@page {
+  margin: 0;
+  size: A4;
+}
+
+@media print {
+  body {
+    background-color: transparent;
+  }
+  .no-print, .btn-print {
+    display: none;
+    visibility: hidden;
+  }
+
+  .component-wrapper-a4 {
+    margin: 0;
+    width: 210mm !important;
+    height: 297mm !important;
+  }
+  .page-a4 {
+    margin: 0;
+    overflow: hidden;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    page-break-after: always;
+    transform: rotate(0) !important;
+  }
+}
