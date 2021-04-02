@@ -10,6 +10,7 @@ export * from './lib/base-report-template/base-report-template.component';
 export * from './lib/error-page/error-page.component';
 export * from './lib/report-lib.component';
 
-export * from './lib/page-a4.directive';
+export * from './lib/directives/page-a4.directive';
+export * from './lib/directives/multirow.directive';
 
 export * from './lib/report-lib.module';

@@ -96,5 +96,6 @@ body {
     break-inside: avoid;
     page-break-after: always;
     transform: rotate(0) !important;
+    box-shadow: none;
   }
 }

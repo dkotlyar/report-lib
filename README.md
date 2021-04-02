@@ -8,14 +8,24 @@ This package automatically split your data in several pages.
 1. Создайте приложение angular: `ng new my-report`
 2. Установите библиотеку report-lib: `npm i report-lib`
 3. В файле src/styles.css добавьте импорт стиля:
-   ```
+   ```css
    @import '~report-lib/index.css';
    ```
    
 4. Создайте компоненту шаблона отчёта  `ng g component my-report-template`
 5. В созданной компоненте добавьте наследование от класса BaseReportComponent.
+   ```typescript
+   export class MyReportTemplateComponent
+    extends BaseReportTemplateComponent
+    implements OnInit {
+      constructor() {
+         super();
+      }
+      ngOnInit(): void { }
+   }
+   ```
 6. В шаблоне компоненты опишите основную структуру:
-    ```
+    ```angular2html
     <div repPageA4>
         <div #pagediv class="page-content">
             <!-- тут будет код шаблона -->
@@ -24,35 +34,74 @@ This package automatically split your data in several pages.
     ```
    
    Для ландшафтной ориентации использовать структуру:
-    ```
-    <div repPageA4 class="report-landscape">
+    ```angular2html
+    <div repPageA4="landscape">
         <div #pagediv class="page-content">
             <!-- тут будет код шаблона -->
         </div>
     </div>
     ```
+   Также для задания ориентации страницы можно использовать классы 
+   report-portrait и report-landscape.
 
 7. В качестве кода шаблона пропишите три основные компоненты, из которых состоит страница отчёта: #header, #footer, #content.
 Обязательным является только компонента #content, которая должна быть объявлена в цикле ngFor.
 Пример:
-    ```
+    ```angular2html
     <table>
         <tr #header>
             <td>№ п/п</td>
             <td>Содержимое</td>
         </tr>
         <ng-container *ngFor="let content of page.items; let npp = index">
+          <tr #content>
             <td>{{npp}}</td>
             <td>{{content}}</td>
-        </tr>
+          </tr>
+        </ng-container>
     </table>
     ```
 
 8. Создайте компоненту отчёта `ng g component my-report`
 9. Загрузите в ней данные и создайте экземпляр класса PagesFactory.
 Выполните функцию splitPages().
+   ```typescript
+   pagesFactory: PagesFactory;
+   error;
+   
+   constructor(private dataService: DataService) { }
+   
+   ngOnInit(): void {
+    this.dataService.getLocalReportData('my-report-id')
+      .then(data => {
+        this.pagesFactory = new PagesFactory(data);
+        this.pagesFactory.splitPages();
+      })
+      .catch(e => this.error = e);
+   }
+   ```
+   ```
+   data = [{...}, {...}, {...}, ..., {...}]
+   ```
 Проитерируйте страницы и на каждую страницу в шаблоне вызовите ваш созданный шаблон my-report-template.
 В качестве параметров задайте [page], [pf], [index]
+   ```angular2html
+   <ng-container *ngFor="let page of pagesFactory.pages; let i = index">
+      <my-report-template
+              [page]="page"
+              [pf]="pagesFactory"
+              [index]="i"></my-report-template>
+   </ng-container>
+
+   <rep-error-page
+           *ngIf="error!==undefined"
+           [error]="error"
+   ></rep-error-page>
+
+   <div class="overlay no-print" *ngIf="!this.pagesFactory.complited">
+      Идет построение отчёта
+   </div>
+   ```
 
 ## Описание методов и полей PagesFactory
 ### constructor(DATA, CONTENT)
@@ -61,7 +110,7 @@ This package automatically split your data in several pages.
 Данные массива DATA будут записаны в поле items объекта Page.
 Также необязательно можно передать объект CONTENT. Данный объект будет записан в поле content объекта Page.
 
-### pages: Array<Page>
+### pages: Array\<Page>
 **Read-only.**
 
 Поле pages возвращает все страницы отчёта. 
@@ -71,7 +120,7 @@ This package automatically split your data in several pages.
 
 Поле numPages возвращает количество страниц отчёта.
 
-### items: Array<PageItem>
+### items: Array\<PageItem>
 **Read-only.**
 
 Поле items возвращает массив DATA обернутый в объект PageItem.
@@ -96,7 +145,7 @@ This package automatically split your data in several pages.
 ### content: any
 Поле content содержит произвольный объект, переданный в качестве параметра CONTENT в конструктор PagesFactory.
 
-### items: Array<PageItem>
+### items: Array\<PageItem>
 Поле items содержит массив PageItem, хранящийся для данной страницы
 
 ### freeHeight: number
@@ -114,3 +163,16 @@ This package automatically split your data in several pages.
 
 ### pageNum: number
 Содержит индекс страницы, на которой данный объект располагается.
+
+## Директивы
+
+### repPageA4
+
+Директива задаёт шаблон для построения отчётов на формате ISO А4. 
+Директива принимает параметр `portrait` для вертикальной ориентации и 
+`landscape` для горизонтальной ориентации.
+
+### repMultirow
+
+Директива устанавливается на HTML-элементы `tr` и позволяет разделять текст,
+который не умещается в ширину одной ячейки, на несколько строк.

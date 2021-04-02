@@ -70,14 +70,14 @@ export class PagesFactory {
     const heights = [0, 0, 0];
 
     if (page.header !== undefined) {
-      heights[0] = this.styles.getOuterHeight(page.header.nativeElement);
+      heights[0] = this.styles.getOuterHeight(page.header.nativeElement) || 0;
     }
 
     if (page.footer !== undefined) {
-      heights[1] = this.styles.getOuterHeight(page.footer.nativeElement);
+      heights[1] = this.styles.getOuterHeight(page.footer.nativeElement) || 0;
     }
 
-    heights[2] = page.minimumFreeHeight;
+    heights[2] = page.minimumFreeHeight || 0;
 
     return heights;
   }
@@ -126,8 +126,16 @@ export class PagesFactory {
       summarySize += itemHeight;
     });
 
-    if (!normalized && splitNumber >= 0 || pageNumber < this.pagesArr.length - 1) {
+    if (this.splitIteration > 1 && splitNumber < 0 && !normalized) {
+      console.error('Couldn\'t split items, because summary size more page size. Sizes: ', {
+        pageHeight,
+        headerAndFooterHeight: summarySize
+      });
+    }
+
+    if (!normalized && (splitNumber >= 0 || this.splitIteration === 1) || pageNumber < this.pagesArr.length - 1) {
       setTimeout(() => {
+        splitNumber = splitNumber > 0 ? splitNumber : 0;
         const splc = this.pagesArr[pageNumber].items.splice(splitNumber + 1).map(item => {
           item.pageNum = pageNumber + 1;
           return item;
@@ -163,14 +171,18 @@ export class PagesFactory {
       let shuffleItems = 0;
 
       this.pages.forEach((page, pageNum) => {
+        // Получаем все элементы с текущей страницы
         const pageItems = this.items.filter(item => item.pageNum === pageNum);
 
+        // Если элементов на текущей странице нет, то она будет удалена
         if (pageItems.length > 0) {
+          // Получаем все элементы на следующей странице
           const items = this.items.filter((item) => item.pageNum > pageNum);
 
           let pageFreeHeight = this.calculateFreeHeight(page, pageNum);
           let mergeNumber = 0;
 
+          // Вычисляем сколько элементом может поместиться на страницу
           items.some(item => {
             if (pageFreeHeight > item.height) {
               mergeNumber++;
@@ -180,6 +192,10 @@ export class PagesFactory {
             return true;
           });
 
+          // Мы можем мержить все элементы, кроме последнего
+          mergeNumber = mergeNumber === items.length ? mergeNumber - 1 : mergeNumber;
+
+          // Мержим элементы соседних страниц
           const mergeItems = items.splice(0, mergeNumber).map(item => {
             item.pageNum = pageNum;
             return item;

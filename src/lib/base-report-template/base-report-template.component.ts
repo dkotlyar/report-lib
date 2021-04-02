@@ -28,7 +28,9 @@ export class BaseReportTemplateComponent implements OnInit {
   @ViewChildren('content')
   set content(components: QueryList<ElementRef>) {
     this.page.components = components;
-    this.page.componentsUpdated.emit();
+    setTimeout(() => {
+      this.page.componentsUpdated.emit();
+    });
   }
 
   constructor() { }

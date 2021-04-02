@@ -18,7 +18,7 @@ export class Page {
   headerAndFooterHeight: number;
   // Требуемое свободное место на странице. Задается в пикселях.
   // Read-Write.
-  minimumFreeHeight: number;
+  minimumFreeHeight = 0;
 
   page: ElementRef;
   header: ElementRef;

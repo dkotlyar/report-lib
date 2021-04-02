@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { ReportLibComponent } from './report-lib.component';
 import {BaseReportTemplateComponent} from './base-report-template/base-report-template.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
-import { PageA4Directive } from './page-a4.directive';
+import { PageA4Directive } from './directives/page-a4.directive';
+import { MultirowDirective } from './directives/multirow.directive';
 
 
 
@@ -11,7 +12,8 @@ import { PageA4Directive } from './page-a4.directive';
     ReportLibComponent,
     BaseReportTemplateComponent,
     ErrorPageComponent,
-    PageA4Directive
+    PageA4Directive,
+    MultirowDirective
   ],
   imports: [
   ],
@@ -19,7 +21,8 @@ import { PageA4Directive } from './page-a4.directive';
     ReportLibComponent,
     BaseReportTemplateComponent,
     ErrorPageComponent,
-    PageA4Directive
+    PageA4Directive,
+    MultirowDirective
   ]
 })
 export class ReportLibModule { }
