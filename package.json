@@ -1,7 +1,7 @@
 {
   "author": "Dmitry Kotlyar",
   "name": "report-lib",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "license": "MIT",
   "description": "Library for generate paper reports with Angular projects. This package automatically split your data in several pages",
   "keywords": ["angular", "report"],

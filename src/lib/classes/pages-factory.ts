@@ -110,8 +110,11 @@ export class PagesFactory {
     page.contentHeight = pageHeight;
     page.headerAndFooterHeight = summarySize;
 
-    page.components.map((item, index) => {
-      const itemHeight = this.styles.getOuterHeight(item.nativeElement);
+    page.components.map((item, index, items) => {
+      let itemHeight = this.styles.getOuterHeight(item.nativeElement);
+      if (index < items.length - 1) {
+        itemHeight = items[index + 1].nativeElement.getClientRects()[0].top - item.nativeElement.getClientRects()[0].top;
+      }
 
       page.items[index].height = itemHeight;
       page.items[index].pageNum = pageNumber;
